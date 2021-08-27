@@ -1,12 +1,27 @@
 import React, { useContext } from 'react';
 import { CategoriesContext } from '../context/CategoriesContext';
+import { CocktailsContext } from '../context/CocktailsContext';
+import { useForm } from './../hooks/useForm';
 
 export const Form = () => {
-  const { test } = useContext(CategoriesContext);
+  const { categories } = useContext(CategoriesContext);
+  const { setSearch, setConsult } = useContext(CocktailsContext);
 
-  alert(test);
+  const initialState = {
+    ingredient: '',
+    category: ''
+  };
+
+  const [valueSearch, handleInputChange] = useForm(initialState);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    setConsult(true);
+    setSearch(valueSearch);
+  };
+
   return (
-    <form className="col-md-12">
+    <form className="col-md-12" onSubmit={handleSubmit}>
       <fieldset className="text-center">
         <legend>Busca bebidas por categoría o ingrediente</legend>
       </fieldset>
@@ -15,15 +30,25 @@ export const Form = () => {
         <div className="col-md-4">
           <input
             type="text"
-            name="name"
+            name="ingredient"
             className="form-control"
+            onChange={handleInputChange}
             placeholder="Busca por ingrediente"
           />
         </div>
 
         <div className="col-md-4">
-          <select name="category" className="form-control">
+          <select
+            name="category"
+            className="form-control"
+            onChange={handleInputChange}
+          >
             <option value="">Selecciona categoría</option>
+            {categories.map(category => (
+              <option value={category.strCategory} key={category.strCategory}>
+                {category.strCategory}
+              </option>
+            ))}
           </select>
         </div>
 
