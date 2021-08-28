@@ -22,10 +22,15 @@ const ModalProvider = props => {
     };
 
     getRecipe();
+
+    // Al momento que se desmonta el componente, la receta vuelve a estar vacía
+    return () => {
+      setFullRecipe({});
+    };
   }, [idRecipe]);
 
   return (
-    <ModalContext.Provider value={{ setIdRecipe }}>
+    <ModalContext.Provider value={{ fullRecipe, setIdRecipe }}>
       {props.children}
     </ModalContext.Provider>
   );

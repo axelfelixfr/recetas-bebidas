@@ -17,7 +17,14 @@ function getModalStyle() {
 const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
-    width: 600,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 450
+    },
+    maxHeight: 500,
+    overflowY: 'auto',
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3)
@@ -26,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 export const Recipe = ({ recipe }) => {
   // Extraer valores del context
-  const { setIdRecipe } = useContext(ModalContext);
+  const { fullRecipe, setIdRecipe } = useContext(ModalContext);
 
   // Configuración del modal de material-ui
   const [modalStyle] = useState(getModalStyle);
@@ -52,6 +59,23 @@ export const Recipe = ({ recipe }) => {
     handleOpen();
   };
 
+  // Muestra y formatea los ingredientes
+  const showIngredients = fullRecipe => {
+    let ingredients = [];
+    for (let i = 1; i < 16; i++) {
+      if (fullRecipe[`strIngredient${i}`]) {
+        ingredients.push(
+          <li key={i}>
+            {fullRecipe[`strIngredient${i}`]}
+            {' - '}
+            {fullRecipe[`strMeasure${i}`]}
+          </li>
+        );
+      }
+    }
+    return ingredients;
+  };
+
   return (
     <div className="col-md-4 mb-3">
       <div className="card">
@@ -74,7 +98,19 @@ export const Recipe = ({ recipe }) => {
 
           <Modal open={open} onClose={handleCloseModal}>
             <div style={modalStyle} className={classes.paper}>
-              <h1>Desde modal</h1>
+              <h2 className="text-primary">{fullRecipe.strDrink}</h2>
+              <h3 className="mt-4">Instrucciones</h3>
+              <p>{fullRecipe.strInstructions}</p>
+              <div className="text-center">
+                <img
+                  className="img-fluid"
+                  src={fullRecipe.strDrinkThumb}
+                  alt={fullRecipe.strDrink}
+                />
+              </div>
+
+              <h3>Ingredientes y cantidades</h3>
+              <ul>{showIngredients(fullRecipe)}</ul>
             </div>
           </Modal>
         </div>
