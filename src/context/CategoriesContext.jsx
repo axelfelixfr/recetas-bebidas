@@ -12,15 +12,17 @@ const CategoriesProvider = props => {
     const getCategories = async () => {
       const url = `https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list`;
 
+      // Extraemos la lista de categorías de bebidas para el formulario
       const {
         data: { drinks }
       } = await axios.get(url);
 
+      // Pasamos la lista al state de categorias
       setCategories(drinks);
     };
 
     getCategories();
-  }, []);
+  }, []); // Solo se ejecuta cuando se monta el componente
 
   return (
     <CategoriesContext.Provider

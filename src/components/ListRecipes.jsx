@@ -3,10 +3,9 @@ import { CocktailsContext } from '../context/CocktailsContext';
 import { Recipe } from './Recipe';
 
 export const ListRecipes = () => {
-  // Extraer recetas
+  // Extraer recetas del context
   const { recipes } = useContext(CocktailsContext);
 
-  console.log(recipes);
   return (
     <div className="row mt-5">
       {recipes.map(recipe => (

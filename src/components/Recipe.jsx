@@ -3,6 +3,7 @@ import { ModalContext } from '../context/ModalContext';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 
+// Posicionamiento del modal
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -14,6 +15,7 @@ function getModalStyle() {
   };
 }
 
+// Estilos del modal
 const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
@@ -37,23 +39,30 @@ export const Recipe = ({ recipe }) => {
 
   // Configuración del modal de material-ui
   const [modalStyle] = useState(getModalStyle);
+
+  // State para abrir/cerrar el modal
   const [open, setOpen] = useState(false);
 
+  // Extraemos las clases de CSS de useStyles
   const classes = useStyles();
 
+  // Abre modal (en el state)
   const handleOpen = () => {
     setOpen(true);
   };
 
+  // Cierra modal (en el state)
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Cierra modal y también pone de nueva cuenta la bebida seleccionada en null
   const handleCloseModal = () => {
     handleClose();
     setIdRecipe(null);
   };
 
+  // Abre el modal y pone el id de la bebida selccionada
   const showModalRecipe = () => {
     setIdRecipe(recipe.idDrink);
     handleOpen();
@@ -61,9 +70,15 @@ export const Recipe = ({ recipe }) => {
 
   // Muestra y formatea los ingredientes
   const showIngredients = fullRecipe => {
+    // Array de ingredientes
     let ingredients = [];
+    // Iteramos hasta que sea menor a 16, ya que el maximo de ingredientes que trae la API es 15
     for (let i = 1; i < 16; i++) {
+      // Si existe un valor en la propiedad 'strIngredient' del objeto de la receta (fullRecipe)
+      // Ejemplo fullRecipe[`strIngredient${i}`] === fullRecipe[strIngredient1]
       if (fullRecipe[`strIngredient${i}`]) {
+        // Por cada propiedad de ingrediente encontrada se itera un elemento (li)
+        // La propiedad 'strMeasure' es la cantidad del ingrediente
         ingredients.push(
           <li key={i}>
             {fullRecipe[`strIngredient${i}`]}
