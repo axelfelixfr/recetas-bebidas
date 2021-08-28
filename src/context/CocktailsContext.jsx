@@ -30,7 +30,7 @@ const CocktailsProvider = props => {
   }, [search, consult]);
 
   return (
-    <CocktailsContext.Provider value={{ setSearch, setConsult }}>
+    <CocktailsContext.Provider value={{ recipes, setSearch, setConsult }}>
       {props.children}
     </CocktailsContext.Provider>
   );
